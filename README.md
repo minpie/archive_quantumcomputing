@@ -6,7 +6,7 @@
 
 * * *
 
-주요 내용은 ```contents/``` 내에 제공되며, ```contents/index.ipynb``` 에서 전체 목차를 살펴보세요.
+주요 내용은 ```contents/``` 내에 제공되며, ```contents/readme.md``` 에서 전체 목차를 살펴보세요.
 
 * * *
 
