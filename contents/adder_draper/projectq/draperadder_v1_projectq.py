@@ -15,11 +15,15 @@ import math
 def OperatorGet_Q(op1):
     # op1의 값을 반환하는 함수.
     '''
-    * op1 비트 배치:
-    LSB ... MSB
-    * 반환값 비트 배치:
-    MSB ... LSB
+    OperatorGet_Q(op1)
+    Do:
+    - (get value of op1)
+    Operands type:
+    - op1: qubits
+    Description:
+    - this function gets value of op1
     '''
+    #
     result = 0
     for i in range(len(op1)-1, -1, -1):
         result = result << 1
@@ -29,16 +33,42 @@ def OperatorGet_Q(op1):
 def OperatorSet_QI(op1, op2):
     # op1의 값을 op2로 설정하는 함수.
     '''
-    * op1 비트 배치:
-    LSB ... MSB
-    * op2 비트 배치:
-    MSB ... LSB
+    OperatorSet_QI(op1, op2)
+    Do:
+    - op1 = op2
+    Operands type:
+    - op1: qubits
+    - op2: integer
+    Description:
+    - this function sets op1 to op2 if op1 are zerorized state.
     '''
+    #
     for i in range(0, len(op1)):
         bit = (op2 >> i) & 0b1
         if(bit == 1):
             X | op1[i]
     return
+
+def GetBitLen(op1):
+    # op1이 2진수로 몇 비트 크기의 수인지 측정하는 함수.
+    '''
+    GetBitLen(op1)
+    Do:
+    - (get length of op1 as bit)
+    Operands type:
+    - op1: integer
+    Description:
+    - this function measures the minimum length of op1 as bit.
+    - negative value and non-integer value is not considered.
+    '''
+    #
+    result = 0
+    if(op1 < 2):
+        result = 1
+    else:
+        result = int(math.floor(math.log2(op1))) + 1
+    return result
+
 
 def w(n):
     cnt = 0
@@ -50,14 +80,6 @@ def w(n):
 def r(n, t):
     # 상수 m의 값을 n과 t로부터 계산하는 함수.
     return int(math.floor(n / (2 ** t)))
-
-def GetBitLen(num1):
-    result = 0
-    if(num1 < 2):
-        result = 1
-    else:
-        result = int(math.floor(math.log2(num1))) + 1
-    return result
 
 def Adder_Draper(op1, op2, carry, ancilla, zerorize_carry=True, is_op2_qubit=True):
     # Drapper's adder

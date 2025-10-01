@@ -5,6 +5,65 @@ from qiskit.circuit import QuantumRegister, ClassicalRegister
 from qiskit_aer import AerSimulator
 import math
 
+def OperatorGet_Q(op1):
+    # op1의 값을 반환하는 함수.
+    '''
+    OperatorGet_Q(op1)
+    Do:
+    - (get value of op1)
+    Operands type:
+    - op1: qubits
+    Description:
+    - this function gets value of op1
+    '''
+    #
+    result = 0
+    for i in range(len(op1)-1, -1, -1):
+        result = result << 1
+        result = result + int(op1[i])
+    return result 
+
+def OperatorSet_QI(op1, op2, targetCircuit):
+    # op1의 값을 op2로 설정하는 함수.
+    '''
+    OperatorSet_QI(op1, op2, targetCircuit)
+    Do:
+    - op1 = op2
+    on targetCircuit
+    Operands type:
+    - op1: QuantumRegister
+    - op2: integer
+    - targetCircuit: QuantumCircuit
+    Description:
+    - this function sets op1 to op2 if op1 are zerorized state.
+    '''
+    #
+    for i in range(0, len(op1)):
+        bit = (op2 >> i) & 0b1
+        if(bit == 1):
+            targetCircuit.x(op1[i])
+    return
+
+def GetBitLen(op1):
+    # op1이 2진수로 몇 비트 크기의 수인지 측정하는 함수.
+    '''
+    GetBitLen(op1)
+    Do:
+    - (get length of op1 as bit)
+    Operands type:
+    - op1: integer
+    Description:
+    - this function measures the minimum length of op1 as bit.
+    - negative value and non-integer value is not considered.
+    '''
+    #
+    result = 0
+    if(op1 < 2):
+        result = 1
+    else:
+        result = int(math.floor(math.log2(op1))) + 1
+    return result
+
 def w(n):
     cnt = 0
     while(n > 0):
@@ -15,14 +74,6 @@ def w(n):
 def r(n, t):
     # 상수 m의 값을 n과 t로부터 계산하는 함수.
     return int(math.floor(n / (2 ** t)))
-
-def GetBitLen(num1):
-    result = 0
-    if(num1 < 2):
-        result = 1
-    else:
-        result = int(math.floor(math.log2(num1))) + 1
-    return result
 
 def Adder_Draper(op1, op2, carry, ancilla, targetCircuit, zerorize_carry=True, is_op2_qubit=True):
     # Drapper's adder
@@ -305,14 +356,10 @@ def Example1():
     mainCircuit = QuantumCircuit(q_n1, q_n2, q_carry, q_ancilla, c_result)
 
     # assignment: n1
-    for i in range(0, c_sizeofn, 1):
-        if(((c_n1 >> i) & 0b1) == 1):
-            mainCircuit.x(q_n1[i])
+    OperatorSet_QI(q_n1, c_n1, mainCircuit)
     #
     # assignment: n2
-    for i in range(0, c_sizeofn, 1):
-        if(((c_n2 >> i) & 0b1) == 1):
-            mainCircuit.x(q_n2[i])
+    OperatorSet_QI(q_n2, c_n2, mainCircuit)
     #
     # addition: n1 = n1 + n2
     Adder_Draper(q_n1, q_n2, q_carry, q_ancilla, mainCircuit, True, True)
@@ -349,9 +396,7 @@ def Example2():
     mainCircuit = QuantumCircuit(q_n1, q_carry, q_ancilla, c_result)
 
     # assignment: n1
-    for i in range(0, c_sizeofn, 1):
-        if(((c_n1 >> i) & 0b1) == 1):
-            mainCircuit.x(q_n1[i])
+    OperatorSet_QI(q_n1, c_n1, mainCircuit)
     #
     # addition: n1 = n1 + n2
     Adder_Draper(q_n1, c_n2, q_carry, q_ancilla, mainCircuit, True, False)
