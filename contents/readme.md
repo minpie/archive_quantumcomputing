@@ -30,10 +30,4 @@ See ```guide.ipynb``` for viewing directory structure in root of each content di
     This File
 
     지금 이 파일
-+ ~~```template```~~
-    :
-
-    ~~Example template for editor~~
-
-    ~~편집자용 예시 template~~
 * * *
