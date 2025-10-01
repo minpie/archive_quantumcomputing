@@ -9,8 +9,8 @@
 
 + ```adder_draper```
     + Draper의 양자 덧셈기
-+ ```base```
-    + 기본 정보
++ ```baseop```
+    + 기본적인 연산의 구현
 + ```readme.md```
     + 지금 이 파일
 + ~~```template```~~
